@@ -27,7 +27,7 @@ JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc) {
   int fd = shm_open("/shmem", O_CREAT | O_RDWR, 0666);
   if (fd < 0) {
     perror("Reader: shm_open failed!\n");
-    return EXIT_FAILURE;
+    return;
   }
 
   char *data =
@@ -53,5 +53,5 @@ JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc) {
 
   close(fd);
 
-  return EXIT_SUCCESS;
+  return;
 }
