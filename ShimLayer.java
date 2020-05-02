@@ -6,10 +6,12 @@ public class ShimLayer {
 
     public static native void run();
 
-    public static native void invoke();
-
     public static void main(String[]args) {
-        new ShimLayer().run();
+    	try {
+        	new ShimLayer().run();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
 
 }
