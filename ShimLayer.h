@@ -4,9 +4,10 @@
 
 #ifndef _Included_ShimLayer
 #define _Included_ShimLayer
+
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif	
 /*
  * Class:     ShimLayer
  * Method:    run

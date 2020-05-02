@@ -12,6 +12,7 @@
 #define SIZE 1024
 #define JNI_NUM 7
 
+
 JNIEXPORT void JNICALL Java_ShimLayer_invoke(JNIEnv *env, jclass jc) {
   printf("Invoke Successfully!\n");
 }
@@ -40,7 +41,8 @@ JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc) {
   char *data_parameter =
       (char *)mmap(0, SIZE, PROT_READ, MAP_SHARED, fd_parameter, 0);
 
-  for (int i = 0; i < JNI_NUM; i++) {    
+  for (int i = 0; i < JNI_NUM; i++) {
+  	printf("access counter: %d\n", ((struct JNIEnv_ *)env)->count++);
     if (sem_wait(sem_id_jvm) < 0) {
       perror("Reader: sem_wait failed!\n");
     }
