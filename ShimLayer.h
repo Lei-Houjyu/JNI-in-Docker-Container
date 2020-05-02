@@ -15,6 +15,14 @@ extern "C" {
 JNIEXPORT void JNICALL Java_ShimLayer_run
   (JNIEnv *, jclass);
 
+/*
+ * Class:     ShimLayer
+ * Method:    invoke
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_ShimLayer_invoke
+  (JNIEnv *, jclass);
+
 #ifdef __cplusplus
 }
 #endif
