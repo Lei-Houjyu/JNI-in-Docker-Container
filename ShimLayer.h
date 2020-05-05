@@ -16,6 +16,62 @@ extern "C" {
 JNIEXPORT void JNICALL Java_ShimLayer_run
   (JNIEnv *, jclass);
 
+/*
+ * Class:     magick_Magick
+ * Method:    parseImageGeometry
+ * Signature: (Ljava/lang/String;Ljava/awt/Rectangle;)I
+ */
+JNIEXPORT void JNICALL Java_magick_Magick_init
+  (JNIEnv *env, jclass magickClass);
+
+/*
+ * Class:     magick_ImageInfo
+ * Method:    init
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_magick_ImageInfo_init
+    (JNIEnv *env, jobject obj);
+
+/*
+ * Class:     magick_ImageInfo
+ * Method:    setFileName
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_magick_ImageInfo_setFileName
+    (JNIEnv *env, jobject obj, jstring fileName);
+
+/*
+ * Class:     magick_MagickImage
+ * Method:    readImage
+ * Signature: (Lmagick/ImageInfo;)V
+ */
+JNIEXPORT void JNICALL Java_magick_MagickImage_readImage
+    (JNIEnv *env, jobject self, jobject imageInfoObj);        
+
+/*
+ * Class:     magick_MagickImage
+ * Method:    scaleImage
+ * Signature: (II)Lmagick/MagickImage;
+ */
+JNIEXPORT jobject JNICALL Java_magick_MagickImage_scaleImage
+    (JNIEnv *env, jobject self, jint cols, jint rows);
+
+/*
+ * Class:     magick_MagickImage
+ * Method:    setFileName
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_magick_MagickImage_setFileName
+    (JNIEnv *env, jobject self, jstring fileName);
+
+/*
+ * Class:     magick_MagickImage
+ * Method:    writeImage
+ * Signature: (Lmagick/ImageInfo;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_magick_MagickImage_writeImage
+    (JNIEnv *env, jobject self, jobject imageInfoObj);        
+
 #ifdef __cplusplus
 }
 #endif

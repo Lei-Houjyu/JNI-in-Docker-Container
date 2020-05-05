@@ -13,13 +13,11 @@
 #define SIZE 1024
 #define JNI_NUM 7
 
-
 JNIEXPORT void JNICALL Java_ShimLayer_invoke(JNIEnv *env, jclass jc) {
   printf("Invoke Successfully!\n");
 }
 
 JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc) {
-  int order;
   struct JNIEnv_ *env_ = (struct JNIEnv_ *)env;
 
   env_->sem_id_jvm = sem_open("/sem-jvm", O_CREAT, 0666, 0);
@@ -57,12 +55,9 @@ JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc) {
     // Actually, we should resolve the method name to find
     // the corresponding native method.
     printf("Method name: %s %ld %ld %ld\n", env_->data_method, env_->data_long[0], env_->data_long[1], env_->data_long[2]);
-    scanf("%d", &order);
     long ret = 0;
     if (strcmp(env_->data_method, "magick.Magick.init()V") == 0) {
-    	printf("1\n");
     	Java_magick_Magick_init(env, env_->data_long[0]);
-    	printf("2\n");
     } else if (strcmp(env_->data_method, "magick.ImageInfo.init()V") == 0) {
     	Java_magick_ImageInfo_init(env, env_->data_long[0]);
     } else if (strcmp(env_->data_method, "magick.ImageInfo.setFileName(Ljava/lang/String;)V") == 0) {
@@ -77,7 +72,6 @@ JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc) {
     	ret = (long)Java_magick_MagickImage_writeImage(env, env_->data_long[0], env_->data_long[1]);
     }
 
-    scanf("%d", &order);
     strcpy(env_->data_method, "X");
     env_->data_long[0] = ret;
     printf("Finished %s %ld\n", env_->data_method, env_->data_long[0]);
