@@ -7,6 +7,7 @@
 #include <semaphore.h>
 #include <sys/wait.h>
 #include <stdbool.h>
+#include <time.h>
 
 #include "ShimLayer.h"
 
@@ -15,6 +16,13 @@
 
 JNIEXPORT void JNICALL Java_ShimLayer_invoke(JNIEnv *env, jclass jc) {
   printf("Invoke Successfully!\n");
+}
+
+long elapsed_counter() {
+  struct timespec tp;
+  int status = clock_gettime(CLOCK_MONOTONIC, &tp);
+  long result = (long)(tp.tv_sec) * (1000 * 1000 * 1000) + (long)(tp.tv_nsec);
+  return result;
 }
 
 JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc) {
@@ -54,7 +62,7 @@ JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc) {
 
     // Actually, we should resolve the method name to find
     // the corresponding native method.
-    printf("Method name: %s %ld %ld %ld\n", env_->data_method, env_->data_long[0], env_->data_long[1], env_->data_long[2]);
+    // printf("Method name: %s %ld %ld %ld\n", env_->data_method, env_->data_long[0], env_->data_long[1], env_->data_long[2]);
     long ret = 0;
     if (strcmp(env_->data_method, "magick.Magick.init()V") == 0) {
     	Java_magick_Magick_init(env, env_->data_long[0]);
@@ -74,11 +82,11 @@ JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc) {
 
     strcpy(env_->data_method, "X");
     env_->data_long[0] = ret;
-    printf("Finished %s %ld\n", env_->data_method, env_->data_long[0]);
+    // printf("Finished %s %ld\n", env_->data_method, env_->data_long[0]);
     if (sem_post(env_->sem_id_container) < 0) {
       perror("Reader: sem_post failed!\n");
     }
-    printf("post sem_id_container\n");
+    // printf("post sem_id_container\n");
   }
   env_->need_ipc = false;
 
