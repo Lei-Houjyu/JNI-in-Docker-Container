@@ -14,7 +14,7 @@ extern "C" {
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_ShimLayer_run
-  (JNIEnv *, jclass);
+  (JNIEnv *, jclass, jint);
 
 /*
  * Class:     magick_Magick

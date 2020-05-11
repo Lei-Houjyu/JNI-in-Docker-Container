@@ -11,6 +11,7 @@
 
 #include "ShimLayer.h"
 
+#define LEN 64
 #define SIZE 1024
 #define JNI_NUM 7
 
@@ -25,22 +26,25 @@ long elapsed_counter() {
   return result;
 }
 
-JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc) {
+JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc, jint id) {
   struct JNIEnv_ *env_ = (struct JNIEnv_ *)env;
 
-  env_->sem_id_jvm = sem_open("/sem-jvm", O_CREAT, 0666, 0);
-  if (env_->sem_id_jvm < SEM_FAILED) {
+  char id_jvm[LEN], id_container[LEN], id_method[LEN], id_string[LEN], id_long[LEN];
+  sprintf(id_jvm,       "/sem-jvm-%d",       id);
+  sprintf(id_container, "/sem-container-%d", id);
+  sprintf(id_method,    "/sem-method-%d",    id);
+  sprintf(id_string,    "/sem-string-%d",    id);
+  sprintf(id_long,      "/sem-long-%d",      id);
+
+  env_->sem_id_jvm = sem_open(id_jvm, O_CREAT, 0666, 0);
+  env_->sem_id_container = sem_open(id_container, O_CREAT, 0666, 0);
+  if (env_->sem_id_jvm < SEM_FAILED || env_->sem_id_container < SEM_FAILED) {
     perror("Reader: sem_open failed!\n");
   }
 
-  env_->sem_id_container = sem_open("/sem-container", O_CREAT, 0666, 0);
-  if (env_->sem_id_container < SEM_FAILED) {
-    perror("Reader: sem_open failed!\n");
-  }
-
-  env_->fd_method = shm_open("/shmem-method", O_CREAT | O_RDWR, 0666);
-  env_->fd_string = shm_open("/shmem-string", O_CREAT | O_RDWR, 0666);
-  env_->fd_long = shm_open("/shmem-long", O_CREAT | O_RDWR, 0666);
+  env_->fd_method = shm_open(id_method, O_CREAT | O_RDWR, 0666);
+  env_->fd_string = shm_open(id_string, O_CREAT | O_RDWR, 0666);
+  env_->fd_long = shm_open(id_long, O_CREAT | O_RDWR, 0666);
 
   if (env_->fd_method < 0 || env_->fd_string < 0 || env_->fd_long < 0) {
     perror("Reader: shm_open failed!\n");
