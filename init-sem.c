@@ -24,8 +24,8 @@ int main(int argc, char* argv[]) {
     sprintf(id_string,    "/sem-string-%s",    argv[0]);
     sprintf(id_long,      "/sem-long-%s",      argv[0]);
 
-	sem_unlink(id_jvm, argv[0]));
-	sem_unlink(id_container, argv[0]));
+	sem_unlink(id_jvm);
+	sem_unlink(id_container);
 
 	sem_t * sem_id;
 	int value;
