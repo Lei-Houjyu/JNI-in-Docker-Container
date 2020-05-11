@@ -54,5 +54,5 @@ int main(int argc, char* argv[]) {
     close(fd_string);
     close(fd_long);
 
-	system("sudo chmod 666 /dev/shm/*");
+	system("chmod 666 /dev/shm/*");
 }
