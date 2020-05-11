@@ -10,6 +10,7 @@
 #include <string.h>
 
 #define LEN 64
+#define SIZE 1024
 
 int main(int argc, char* argv[]) {
 	if (argc == 0) {
