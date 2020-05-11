@@ -21,9 +21,9 @@ int main(int argc, char* argv[]) {
     char id_jvm[LEN], id_container[LEN], id_method[LEN], id_string[LEN], id_long[LEN];
     sprintf(id_jvm,       "/sem-jvm-%s",       argv[0]);
     sprintf(id_container, "/sem-container-%s", argv[0]);
-    sprintf(id_method,    "/sem-method-%s",    argv[0]);
-    sprintf(id_string,    "/sem-string-%s",    argv[0]);
-    sprintf(id_long,      "/sem-long-%s",      argv[0]);
+    sprintf(id_method,    "/shmem-method-%s",    argv[0]);
+    sprintf(id_string,    "/shmem-string-%s",    argv[0]);
+    sprintf(id_long,      "/shmem-long-%s",      argv[0]);
 
 	sem_unlink(id_jvm);
 	sem_unlink(id_container);

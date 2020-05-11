@@ -32,9 +32,9 @@ JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc, jint id) {
   char id_jvm[LEN], id_container[LEN], id_method[LEN], id_string[LEN], id_long[LEN];
   sprintf(id_jvm,       "/sem-jvm-%d",       id);
   sprintf(id_container, "/sem-container-%d", id);
-  sprintf(id_method,    "/sem-method-%d",    id);
-  sprintf(id_string,    "/sem-string-%d",    id);
-  sprintf(id_long,      "/sem-long-%d",      id);
+  sprintf(id_method,    "/shmem-method-%d",  id);
+  sprintf(id_string,    "/shmem-string-%d",  id);
+  sprintf(id_long,      "/shmem-long-%d",    id);
 
   env_->sem_id_jvm = sem_open(id_jvm, O_CREAT, 0666, 0);
   env_->sem_id_container = sem_open(id_container, O_CREAT, 0666, 0);
