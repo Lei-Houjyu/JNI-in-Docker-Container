@@ -13,7 +13,6 @@
 
 #define LEN 64
 #define SIZE 1024
-#define JNI_NUM 7
 
 JNIEXPORT void JNICALL Java_ShimLayer_invoke(JNIEnv *env, jclass jc) {
   printf("Invoke Successfully!\n");
@@ -35,6 +34,7 @@ JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc, jint id) {
   sprintf(id_method,    "/shmem-method-%d",  id);
   sprintf(id_string,    "/shmem-string-%d",  id);
   sprintf(id_long,      "/shmem-long-%d",    id);
+  printf("[shim layer] %s %s %s %s %s\n", id_jvm, id_container, id_method, id_string, id_long);
 
   env_->sem_id_jvm = sem_open(id_jvm, O_CREAT, 0666, 0);
   env_->sem_id_container = sem_open(id_container, O_CREAT, 0666, 0);
@@ -59,14 +59,15 @@ JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc, jint id) {
       (long *)mmap(0, SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, env_->fd_long, 0);
 
   env_->need_ipc = true;
-  for (int i = 0; i < JNI_NUM; i++) {
+  while (true) {
     if (sem_wait(env_->sem_id_jvm) < 0) {
       perror("Reader: sem_wait failed!\n");
     }
+    printf("[shim layer] wait sem_id_jvm\n");
 
     // Actually, we should resolve the method name to find
     // the corresponding native method.
-    // printf("Method name: %s %ld %ld %ld\n", env_->data_method, env_->data_long[0], env_->data_long[1], env_->data_long[2]);
+    printf("[shim layer] %s %ld %ld %ld\n", env_->data_method, env_->data_long[0], env_->data_long[1], env_->data_long[2]);
     long ret = 0;
     if (strcmp(env_->data_method, "magick.Magick.init()V") == 0) {
     	Java_magick_Magick_init(env, env_->data_long[0]);
@@ -82,15 +83,19 @@ JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc, jint id) {
     	Java_magick_MagickImage_setFileName(env, env_->data_long[0], env_->data_long[1]);
     } else if (strcmp(env_->data_method, "magick.MagickImage.writeImage(Lmagick/ImageInfo;)Z") == 0) {
     	ret = (long)Java_magick_MagickImage_writeImage(env, env_->data_long[0], env_->data_long[1]);
+    } else if (strcmp(env_->data_method, "magick.MagickImage.getImageAttribute(Ljava/lang/String;)Ljava/lang/String;") == 0) {
+      ret = (long)Java_magick_MagickImage_getImageAttribute(env, env_->data_long[0], env_->data_long[1]);
+    } else if (strcmp(env_->data_method, "magick.MagickImage.getMagick()Ljava/lang/String;") == 0) {
+      ret = (long)Java_magick_MagickImage_getMagick(env, env_->data_long[0]);
     }
 
     strcpy(env_->data_method, "X");
     env_->data_long[0] = ret;
-    // printf("Finished %s %ld\n", env_->data_method, env_->data_long[0]);
+    printf("[shim layer] Finished %s %ld\n", env_->data_method, env_->data_long[0]);
     if (sem_post(env_->sem_id_container) < 0) {
       perror("Reader: sem_post failed!\n");
     }
-    // printf("post sem_id_container\n");
+    printf("[shim layer] post sem_id_container\n");
   }
   env_->need_ipc = false;
 

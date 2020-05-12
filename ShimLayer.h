@@ -70,7 +70,23 @@ JNIEXPORT void JNICALL Java_magick_MagickImage_setFileName
  * Signature: (Lmagick/ImageInfo;)Z
  */
 JNIEXPORT jboolean JNICALL Java_magick_MagickImage_writeImage
-    (JNIEnv *env, jobject self, jobject imageInfoObj);        
+    (JNIEnv *env, jobject self, jobject imageInfoObj);
+
+/*
+ * Class:     magick_MagickImage
+ * Method:    getImageAttribute
+ * Signature: (Ljava/lang/String;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_magick_MagickImage_getImageAttribute
+    (JNIEnv *env, jobject self, jstring key);
+
+/*
+ * Class:     magick_MagickImage
+ * Method:    getMagick
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_magick_MagickImage_getMagick
+    (JNIEnv *env, jobject self);               
 
 #ifdef __cplusplus
 }

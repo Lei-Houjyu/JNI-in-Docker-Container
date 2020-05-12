@@ -13,17 +13,17 @@
 #define SIZE 1024
 
 int main(int argc, char* argv[]) {
-	if (argc == 0) {
+	if (argc == 1) {
 		printf("argument missing!\n");
 		return 0;
 	}
 
     char id_jvm[LEN], id_container[LEN], id_method[LEN], id_string[LEN], id_long[LEN];
-    sprintf(id_jvm,       "/sem-jvm-%s",       argv[0]);
-    sprintf(id_container, "/sem-container-%s", argv[0]);
-    sprintf(id_method,    "/shmem-method-%s",    argv[0]);
-    sprintf(id_string,    "/shmem-string-%s",    argv[0]);
-    sprintf(id_long,      "/shmem-long-%s",      argv[0]);
+    sprintf(id_jvm,       "/sem-jvm-%s",       argv[1]);
+    sprintf(id_container, "/sem-container-%s", argv[1]);
+    sprintf(id_method,    "/shmem-method-%s",    argv[1]);
+    sprintf(id_string,    "/shmem-string-%s",    argv[1]);
+    sprintf(id_long,      "/shmem-long-%s",      argv[1]);
 
 	sem_unlink(id_jvm);
 	sem_unlink(id_container);
@@ -54,5 +54,5 @@ int main(int argc, char* argv[]) {
     close(fd_string);
     close(fd_long);
 
-	system("chmod 666 /dev/shm/*");
+	system("sudo chmod 666 /dev/shm/*");
 }
