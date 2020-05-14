@@ -4,11 +4,11 @@ public class ShimLayer {
         System.loadLibrary("ShimLayer");
     }
 
-    public static native void run(int id);
+    public static native void run(long id);
 
     public static void main(String[]args) {
     	try {
-        	new ShimLayer().run(Integer.parseInt(args[0]));
+        	new ShimLayer().run(Long.parseLong(args[0]));
     	} catch (Exception e) {
     		e.printStackTrace();
     	}

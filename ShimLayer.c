@@ -25,15 +25,15 @@ long elapsed_counter() {
   return result;
 }
 
-JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc, jint id) {
+JNIEXPORT void JNICALL Java_ShimLayer_run(JNIEnv *env, jclass jc, jlong id) {
   struct JNIEnv_ *env_ = (struct JNIEnv_ *)env;
 
   char id_jvm[LEN], id_container[LEN], id_method[LEN], id_string[LEN], id_long[LEN];
-  sprintf(id_jvm,       "/sem-jvm-%d",       id);
-  sprintf(id_container, "/sem-container-%d", id);
-  sprintf(id_method,    "/shmem-method-%d",  id);
-  sprintf(id_string,    "/shmem-string-%d",  id);
-  sprintf(id_long,      "/shmem-long-%d",    id);
+  sprintf(id_jvm,       "/sem-jvm-%ld",       id);
+  sprintf(id_container, "/sem-container-%ld", id);
+  sprintf(id_method,    "/shmem-method-%ld",  id);
+  sprintf(id_string,    "/shmem-string-%ld",  id);
+  sprintf(id_long,      "/shmem-long-%ld",    id);
   printf("[shim layer] %s %s %s %s %s\n", id_jvm, id_container, id_method, id_string, id_long);
 
   env_->sem_id_jvm = sem_open(id_jvm, O_CREAT, 0666, 0);
